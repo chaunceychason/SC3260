@@ -23,6 +23,7 @@ typedef struct {
    float density; // density of particles in box
    float xmass; // particle mass
    float xmassi; // inverse of particle mass
+   long int nickscounter; //Nicks Count to find FLOPS
 } misc_params;
 
 void set_params(lj_params *, misc_params *, const int, const float);

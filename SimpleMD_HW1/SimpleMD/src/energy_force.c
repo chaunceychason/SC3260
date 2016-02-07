@@ -36,7 +36,7 @@ void compute_long_range_correction(const lj_params * len_jo, const misc_params *
 //       - m_pars: struct containing misc. parameters.
 //************************************************************************
 void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo, 
-                               const misc_params * m_pars )
+                               misc_params * m_pars )
 {
 
    timeit(1,0);
