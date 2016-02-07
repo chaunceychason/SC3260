@@ -43,6 +43,7 @@ void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo,
    int atomi, atomj;
    for (atomi=0; atomi < myatoms->N; atomi++)
    {
+      m_pars -> nickscounter += 1
       myatoms->fx[atomi] = 0.0;
       myatoms->fy[atomi] = 0.0;
       myatoms->fz[atomi] = 0.0;
