@@ -8,5 +8,5 @@ then
    bin/run_md -N 5000 -ts 10000 -xyz 1000 -o 50
 else
    echo "running: bin/run_md -N 100"
-   bin/run_md -N 1600
+   bin/run_md -N 800
 fi

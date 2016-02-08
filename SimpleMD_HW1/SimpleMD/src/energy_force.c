@@ -43,7 +43,8 @@ void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo,
    int atomi, atomj;
    for (atomi=0; atomi < myatoms->N; atomi++)
    {
-      m_pars -> nickscounter += 1
+      m_pars -> nickscounter += 1; //FLOP: FOR LOOP COUNTER INCREMENT
+
       myatoms->fx[atomi] = 0.0;
       myatoms->fy[atomi] = 0.0;
       myatoms->fz[atomi] = 0.0;
@@ -53,36 +54,65 @@ void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo,
    
    for (atomi=0; atomi < myatoms->N; atomi++)
    {
-
+      m_pars -> nickscounter += 1; //FLOP: FOR LOOP COUNTER INCREMENT
       for (atomj=atomi+1 ; atomj < myatoms->N; atomj++)
       {
+	 m_pars -> nickscounter += 1;  //FLOP: FOR LOOP COUNTER INCREMENT
 
          float xxi = myatoms->xx[atomi] - myatoms->xx[atomj];
+	 m_pars -> nickscounter += 1;  //FLOP: SUBTRACTION
+
          xxi = minimum_image( xxi, m_pars->side, m_pars->sideh );
-         float yyi = myatoms->yy[atomi] - myatoms->yy[atomj];
+         m_pars -> nickscounter += 2;  //FLOP: 2 FOR MINIMUM-IMAGE
+         
+	 float yyi = myatoms->yy[atomi] - myatoms->yy[atomj];
+         m_pars -> nickscounter += 1;  //FLOP: SUBTRACTION
+
          yyi = minimum_image( yyi, m_pars->side, m_pars->sideh );
+         m_pars -> nickscounter += 2;  //FLOP: 2 FOR MINIMUM-IMAGE
+
          float zzi = myatoms->zz[atomi] - myatoms->zz[atomj];
+         m_pars -> nickscounter += 1;  //FLOP: SUBTRACTION
+
          zzi = minimum_image( zzi, m_pars->side, m_pars->sideh );
+         m_pars -> nickscounter += 2;  //FLOP: 2 FOR MINIMUM-IMAGE
 
          float dis2 = xxi*xxi + yyi*yyi + zzi*zzi;
+         m_pars -> nickscounter += 2;  //FLOP: 2 ADDITION
+
          if ( dis2 <= len_jo->rcut2 )
          {
             float dis2i = 1.0 / dis2;
+            m_pars -> nickscounter += 1;  //FLOP: DIVISION
+
             float dis6i = dis2i * dis2i * dis2i;
+            m_pars -> nickscounter += 2;  //FLOP: 2 MULTI 
+
             float dis12i = dis6i * dis6i;
+            m_pars -> nickscounter += 1;  //FLOP: MULTI
+
             myatoms->pot_energy += len_jo->sig12 * dis12i - 
                                    len_jo->sig6 * dis6i;
+            m_pars -> nickscounter += 4;  //FLOP: ADD, MULTI, SUB, MULTI
+
             float fterm = dis2i * ( 2.0 * len_jo->sig12 * dis12i -
                                           len_jo->sig6 * dis6i );
+            m_pars -> nickscounter += 5;  //FLOP: 3 MULTI, SUBTR, MULTI             
+
             myatoms->virial -= fterm * dis2;
+            m_pars -> nickscounter += 2;  //FLOP: SUBTR, MULTI
             
+
             myatoms->fx[atomi] += fterm * xxi;
             myatoms->fy[atomi] += fterm * yyi;
             myatoms->fz[atomi] += fterm * zzi;
+            m_pars -> nickscounter += 6;  //FLOP: ADD, MULTI * 3
+
             myatoms->fx[atomj] -= fterm * xxi;
             myatoms->fy[atomj] -= fterm * yyi;
             myatoms->fz[atomj] -= fterm * zzi;
-         
+            m_pars -> nickscounter += 6;  //FLOP: SUBTR, MULTI * 3
+		
          }
 
       } 
@@ -90,12 +120,18 @@ void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo,
    }
    for (atomi=0; atomi < myatoms->N; atomi++)
    {
+      m_pars -> nickscounter += 1;  //FLOP: FOR LOOP INCREMENT
+
       myatoms->fx[atomi] *= 24.0 * len_jo->eps;
       myatoms->fy[atomi] *= 24.0 * len_jo->eps;
       myatoms->fz[atomi] *= 24.0 * len_jo->eps;
+      m_pars -> nickscounter += 6;  //FLOP: (2 MULTI) * 3
+
    }
    myatoms->pot_energy *= 4.0 * len_jo->eps;
    myatoms->virial *= 24.0 * len_jo->eps;
+   m_pars -> nickscounter += 4;  //FLOP: (2 MULTI) * 2
+
    timeit(1,1);
 
 }

@@ -115,8 +115,7 @@ void driver(const int arg_count, char ** arg_list)
    printf("Simulation Complete!\n");
    print_timer();
    
-   printf("\nNOW PRINTING THE FLOP COUNTER!! (test... not correct)\n");
-   printf("The count is: %d \n", mp.nickscounter)
+   printf("The FLOP count is (nickscounter): %ld \n", mp.nickscounter);
    
 
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
