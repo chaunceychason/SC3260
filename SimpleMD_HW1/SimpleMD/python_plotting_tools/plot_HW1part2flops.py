@@ -13,7 +13,7 @@ def plotfunc(xpoints, ypoints):
     plot_title="FLOPS in energy function vs. # Atoms"
     x_axis="number of atoms"
     y_axis="number of FLOPS"
-    figure_name=os.path.expanduser('~/Feb7HW1Part2B.png')
+    figure_name=os.path.expanduser('~/Feb7HW1Part2Bflops.png')
     
 
     #plt.figure(figsize=(8,30))
@@ -27,7 +27,7 @@ def plotfunc(xpoints, ypoints):
     #plt.xlim(0,max(newx))
     #plt.xlim(0,max(xpoints))
     #plt.ylim(0,160)
-    plt.yscale('log')
+    #plt.yscale('log')
 
     print("About to save figure")
     plt.savefig(figure_name)

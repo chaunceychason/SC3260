@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 def plotfunc(xpoints, ypoints):
 
     print "Called plotfunc"
-    plot_title="FLOPS in energy function vs. # Atoms"
+    plot_title="Time in energy function vs. # Atoms"
     x_axis="number of atoms"
-    y_axis="number of FLOPS"
-    figure_name=os.path.expanduser('~/Feb7HW1Part2B.png')
+    y_axis="Time [sec]"
+    figure_name=os.path.expanduser('~/Feb7HW1Part2time.png')
     
 
     #plt.figure(figsize=(8,30))
@@ -60,4 +60,4 @@ with open(filename) as fn:
 
 
 print("Finished running")
-plotfunc(atomarray, floparray)
+plotfunc(atomarray, timearray)
