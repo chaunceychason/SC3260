@@ -9,7 +9,7 @@ CC=icc
 CFLAGS=-I$(INCDIR) -Wall -xHost -O3 -vec_report2 -openmp 
 
 # Linker flags and libs
-LDFLAGS=
+LDFLAGS=-parallel
 LDLIBS=
 
 # Name of final executable

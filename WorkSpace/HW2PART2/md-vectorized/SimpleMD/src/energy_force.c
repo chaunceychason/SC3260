@@ -40,10 +40,7 @@ void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo,
                                const misc_params * m_pars )
 {
 
-   //#pragma omp parallel
    //{
-      
-      //int tid = omp_get_thread_num();
 
       timeit(1,0);
       int atomi, atomj, i;
@@ -56,7 +53,7 @@ void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo,
       }
 
       myatoms->pot_energy = 0.0;
-      myatoms->virial = 0.0;
+      myatoms->virial     = 0.0;
 
       float sum_local_pot[myatoms->N]; //need to initialize all elements to zero
       float sum_local_vir[myatoms->N]; 
